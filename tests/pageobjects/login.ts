@@ -2,24 +2,27 @@ import { Locator, Page } from '@playwright/test';
 
 export class Login {
   readonly page: Page;
+  readonly url: string = 'https://www.saucedemo.com/';
   readonly username: Locator;
   readonly password: Locator;
-  readonly signIn: Locator;
+  readonly login: Locator;
+  readonly errorMessage: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.username = page.locator('(//input[@id="outlined-name"])[1]');
-    this.password = page.locator('(//input[@id="outlined-name"])[2]');
-    this.signIn = page.locator('(//span[normalize-space()="SIGN IN"])[1]');
+    this.username = page.locator('[data-test="username"]');
+    this.password = page.locator('[data-test="password"]');
+    this.login = page.locator('[data-test="login-button"]');
+    this.errorMessage = page.locator('[data-test="error"]');
   }
 
   async goto() {
-    await this.page.goto('https://charlyautomatiza.github.io/task-management-frontend');
+    await this.page.goto(this.url);
   }
 
-  async sigIn(username:string, password:string) {
+  async signIn(username: string, password: string) {
     await this.username.fill(username);
     await this.password.fill(password);
-    await this.signIn.click();
+    await this.login.click();
   }
 }
