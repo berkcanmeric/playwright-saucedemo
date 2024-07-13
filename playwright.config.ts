@@ -5,19 +5,17 @@ import 'dotenv/config';
  * See https://playwright.dev/docs/test-configuration.
  */
 const config: PlaywrightTestConfig = {
-
   testDir: './tests',
 
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
 
   expect: {
-
     /**
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 5000
+    timeout: 5000,
   },
 
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -27,7 +25,7 @@ const config: PlaywrightTestConfig = {
   retries: process.env.CI ? 2 : 3,
 
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 3 : undefined,
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   // reporter: 'html',
@@ -36,7 +34,7 @@ const config: PlaywrightTestConfig = {
     ['line'],
     ['html', { open: 'never' }],
     ['allure-playwright'],
-    ['junit', { outputFile: './junit-results/results.xml' }] 
+    ['junit', { outputFile: './junit-results/results.xml' }],
   ],
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
