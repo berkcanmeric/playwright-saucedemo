@@ -4,3 +4,4 @@ playwright-report/
 allure*
 .env
 lighthouse/
+playwright/.auth

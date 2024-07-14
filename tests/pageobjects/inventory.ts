@@ -9,6 +9,7 @@ export class Inventory {
   readonly itemAddToCartButtons: Locator;
   readonly itemRemoveFromCartButtons: Locator;
   readonly shoppingCartItemCount: Locator;
+  readonly filter: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -22,6 +23,7 @@ export class Inventory {
       name: 'Remove',
     });
     this.shoppingCartItemCount = page.locator('.shopping_cart_badge');
+    this.filter = page.locator('[data-test="product-sort-container"]');
   }
 
   async goto() {
@@ -77,9 +79,5 @@ export class Inventory {
 
   itemPrice(price: string): Locator {
     return this.page.getByText(price);
-  }
-
-  cartItemCount(count: string): Locator {
-    return this.page.getByText(count);
   }
 }

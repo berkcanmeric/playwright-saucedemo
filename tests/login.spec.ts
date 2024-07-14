@@ -3,13 +3,14 @@ import { Login } from './pageobjects/login';
 
 let login: Login;
 
+// Reset storage state for this file to avoid being authenticated
+test.use({ storageState: { cookies: [], origins: [] } });
+
 test.beforeEach(async ({ page }) => {
   login = new Login(page);
   await login.goto();
   expect(page.url()).toBe(login.url);
 });
-
-test.describe.configure({ mode: 'parallel' });
 
 test.describe('Login Page Tests', () => {
   test('should login successfully with valid credentials', async () => {
