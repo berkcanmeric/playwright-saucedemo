@@ -83,7 +83,7 @@ test.describe('Inventory Page Tests', () => {
       );
     });
 
-    test('should verify "Add to Cart" functionality', async () => {
+    test('should verify "Add to Cart" and "Remove from Cart" functionalities', async () => {
       // Add single item to cart
       await inventory.addItemToCartByIndex(0);
       await expect(inventory.itemRemoveFromCartButtons).toHaveCount(1);
@@ -109,24 +109,24 @@ test.describe('Inventory Page Tests', () => {
       await expect(inventory.shoppingCartItemCount).not.toBeVisible();
     });
     test.describe('Edge Case Tests', () => {
-      test('should verify "Add to Cart" functionality for all items', async () => {
+      test('should verify "Add to Cart" and "Remove from Cart" functionalities for all items', async () => {
         const totalItems = await inventory.itemAddToCartButtons.count();
+
         for (let i = 0; i < totalItems; i++) {
-          await inventory.addItemToCartByIndex(i);
+          await inventory.itemAddToCartButtons.nth(0).click();
         }
+
         await expect(inventory.itemRemoveFromCartButtons).toHaveCount(
           totalItems
         );
         await expect(inventory.shoppingCartItemCount).toHaveText(
           totalItems.toString()
         );
-      });
 
-      test('should verify "Remove from Cart" functionality for all items', async () => {
-        const totalItems = await inventory.itemRemoveFromCartButtons.count();
         for (let i = 0; i < totalItems; i++) {
-          await inventory.removeItemFromCartByIndex(i);
+          await inventory.itemRemoveFromCartButtons.nth(0).click();
         }
+
         await expect(inventory.itemAddToCartButtons).toHaveCount(totalItems);
         await expect(inventory.shoppingCartItemCount).not.toBeVisible();
       });
