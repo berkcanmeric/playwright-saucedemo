@@ -16,10 +16,9 @@ const checkVisibility = async (locator: Locator, count: number) => {
 };
 
 const getItemDetails = async (locator: Locator, count: number) => {
-  let details = [];
+  const details = [];
   for (let i = 0; i < count; i++) {
-    const detail = await locator.nth(i).innerText();
-    details.push(detail);
+    details.push(await locator.nth(i).innerText());
   }
   return details;
 };
@@ -31,10 +30,8 @@ const sortAndVerify = async (
   comparator: (a: string, b: string) => number
 ) => {
   await inventory.filter.selectOption(sortOption);
-
-  const totalItems: number = await locator.count();
+  const totalItems = await locator.count();
   const items = await getItemDetails(locator, totalItems);
-
   const sortedItems = [...items].sort(comparator);
   expect(items).toEqual(sortedItems);
 };
@@ -42,7 +39,7 @@ const sortAndVerify = async (
 test.describe('Inventory Page Tests', () => {
   test.describe('General UI Tests', () => {
     test('should verify inventory item display', async () => {
-      const totalItems: number = await inventory.itemNames.count();
+      const totalItems = await inventory.itemNames.count();
 
       await expect(inventory.itemNames).toHaveCount(totalItems);
       await expect(inventory.itemDescriptions).toHaveCount(totalItems);
@@ -60,6 +57,7 @@ test.describe('Inventory Page Tests', () => {
       }
     });
   });
+
   test.describe('Functionality Tests', () => {
     test('should verify inventory item sorting by name', async () => {
       await sortAndVerify(inventory, 'az', inventory.itemNames, (a, b) =>
@@ -86,15 +84,56 @@ test.describe('Inventory Page Tests', () => {
     });
 
     test('should verify "Add to Cart" functionality', async () => {
-      //add single item to cart
+      // Add single item to cart
       await inventory.addItemToCartByIndex(0);
       await expect(inventory.itemRemoveFromCartButtons).toHaveCount(1);
       await expect(inventory.shoppingCartItemCount).toHaveText('1');
 
-      //remove single item from cart
+      // Remove single item from cart
       await inventory.removeItemFromCartByIndex(0);
       await expect(inventory.itemAddToCartButtons).toHaveCount(6);
       await expect(inventory.shoppingCartItemCount).not.toBeVisible();
+
+      // Add multiple items to cart
+      await inventory.addItemToCartByName('Sauce Labs Bike Light');
+      await inventory.addItemToCartByName('Sauce Labs Bolt T-Shirt');
+      await inventory.addItemToCartByName('Sauce Labs Fleece Jacket');
+      await expect(inventory.itemRemoveFromCartButtons).toHaveCount(3);
+      await expect(inventory.shoppingCartItemCount).toHaveText('3');
+
+      // Remove multiple items from cart
+      await inventory.removeItemFromCartByName('Sauce Labs Bike Light');
+      await inventory.removeItemFromCartByName('Sauce Labs Bolt T-Shirt');
+      await inventory.removeItemFromCartByName('Sauce Labs Fleece Jacket');
+      await expect(inventory.itemAddToCartButtons).toHaveCount(6);
+      await expect(inventory.shoppingCartItemCount).not.toBeVisible();
+    });
+    test.describe('Edge Case Tests', () => {
+      test('should verify "Add to Cart" functionality for all items', async () => {
+        const totalItems = await inventory.itemAddToCartButtons.count();
+        for (let i = 0; i < totalItems; i++) {
+          await inventory.addItemToCartByIndex(i);
+        }
+        await expect(inventory.itemRemoveFromCartButtons).toHaveCount(
+          totalItems
+        );
+        await expect(inventory.shoppingCartItemCount).toHaveText(
+          totalItems.toString()
+        );
+      });
+
+      test('should verify "Remove from Cart" functionality for all items', async () => {
+        const totalItems = await inventory.itemRemoveFromCartButtons.count();
+        for (let i = 0; i < totalItems; i++) {
+          await inventory.removeItemFromCartByIndex(i);
+        }
+        await expect(inventory.itemAddToCartButtons).toHaveCount(totalItems);
+        await expect(inventory.shoppingCartItemCount).not.toBeVisible();
+      });
+
+      test('should verify Empty Cart functionality', async () => {
+        await expect(inventory.shoppingCartItemCount).not.toBeVisible();
+      });
     });
   });
 });
