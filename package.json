@@ -45,6 +45,7 @@
     "allure-commandline": "^2.29.0",
     "allure-playwright": "^2.15.1",
     "eslint": "^8.56.0",
+    "eslint-plugin-playwright": "^1.6.2",
     "globals": "^15.8.0",
     "lighthouse": "^12.1.0",
     "playwright-lighthouse": "^4.0.0",

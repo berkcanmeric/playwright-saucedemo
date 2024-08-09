@@ -1,18 +1,17 @@
 import { Locator, Page } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
-export class Inventory {
-  readonly page: Page;
+export class Inventory extends BasePage {
   readonly url: string = "https://www.saucedemo.com/inventory.html/";
   readonly itemNames: Locator;
   readonly itemDescriptions: Locator;
   readonly itemPrices: Locator;
   readonly itemAddToCartButtons: Locator;
   readonly itemRemoveFromCartButtons: Locator;
-  readonly shoppingCartItemCount: Locator;
   readonly filter: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.itemNames = page.locator(".inventory_item_name");
     this.itemDescriptions = page.locator(".inventory_item_desc");
     this.itemPrices = page.locator(".inventory_item_price");
@@ -22,7 +21,6 @@ export class Inventory {
     this.itemRemoveFromCartButtons = page.getByRole("button", {
       name: "Remove",
     });
-    this.shoppingCartItemCount = page.locator(".shopping_cart_badge");
     this.filter = page.locator('[data-test="product-sort-container"]');
   }
 

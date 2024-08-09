@@ -1,5 +1,5 @@
 import { test, expect, Locator } from "@playwright/test";
-import { Inventory } from "./pageobjects/inventory";
+import { Inventory } from "./pageobjects/Inventory";
 
 let inventory: Inventory;
 

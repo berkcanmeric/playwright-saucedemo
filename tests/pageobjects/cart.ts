@@ -1,18 +1,16 @@
 import { Locator, Page } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
-export class Cart {
-  readonly page: Page;
+export class Cart extends BasePage {
   readonly url: string = "https://www.saucedemo.com/cart.html/";
   readonly itemNames: Locator;
   readonly itemDescriptions: Locator;
   readonly itemPrices: Locator;
   readonly itemRemoveFromCartButtons: Locator;
   readonly continueShoppingButton: Locator;
-  readonly shoppingCartItemCount: Locator;
   readonly checkoutButton: Locator;
-
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.itemNames = page.locator(".inventory_item_name");
     this.itemDescriptions = page.locator(".inventory_item_desc");
     this.itemPrices = page.locator(".inventory_item_price");
@@ -21,12 +19,24 @@ export class Cart {
       '[data-test="continue-shopping"]'
     );
     this.checkoutButton = page.locator('[data-test="checkout"]');
-    this.shoppingCartItemCount = page.locator(".shopping_cart_badge");
   }
 
   async goto() {
     await this.page.goto(this.url);
   }
+  // Remove item from cart by name
+  async removeItemFromCartByName(name: string) {
+    await this.getButtonLocatorByName("remove", name).click();
+  }
+
+  async goToCheckout() {
+    await this.checkoutButton.click();
+  }
+
+  async continueShopping() {
+    await this.continueShoppingButton.click();
+  }
+
   // Helper method to sanitize item name
   private sanitizeItemName(name: string): string {
     return name.replace(/\s+/g, "-").toLowerCase();
@@ -38,11 +48,6 @@ export class Cart {
   ): Locator {
     const sanitizedName = this.sanitizeItemName(name);
     return this.page.locator(`[data-test="${action}-${sanitizedName}"]`);
-  }
-
-  // Remove item from cart by name
-  async removeItemFromCartByName(name: string) {
-    await this.getButtonLocatorByName("remove", name).click();
   }
 
   itemName(name: string): Locator {
