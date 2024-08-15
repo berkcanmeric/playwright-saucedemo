@@ -9,6 +9,7 @@ export class Cart extends BasePage {
   readonly itemRemoveFromCartButtons: Locator;
   readonly continueShoppingButton: Locator;
   readonly checkoutButton: Locator;
+  
   constructor(page: Page) {
     super(page);
     this.itemNames = page.locator(".inventory_item_name");

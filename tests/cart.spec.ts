@@ -14,9 +14,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe("Inventory Page Tests", () => {
   test.describe("Functionality Tests", () => {
-    test("should verify cart contents after adding and removing items", async ({
-      page,
-    }) => {
+    test("should verify cart contents after adding and removing items", async ({}) => {
       // Add items to cart
       await inventory.addItemToCartByName("Sauce Labs Bike Light");
       await inventory.addItemToCartByName("Sauce Labs Bolt T-Shirt");

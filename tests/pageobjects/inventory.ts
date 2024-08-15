@@ -2,7 +2,7 @@ import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
 
 export class Inventory extends BasePage {
-  readonly url: string = "https://www.saucedemo.com/inventory.html/";
+  readonly url: string = "https://www.saucedemo.com/inventory.html";
   readonly itemNames: Locator;
   readonly itemDescriptions: Locator;
   readonly itemPrices: Locator;
@@ -28,20 +28,6 @@ export class Inventory extends BasePage {
     await this.page.goto(this.url);
   }
 
-  // Helper method to sanitize item name
-  private sanitizeItemName(name: string): string {
-    return name.replace(/\s+/g, "-").toLowerCase();
-  }
-
-  // Dynamic locator for buttons based on item name
-  private getButtonLocatorByName(
-    action: "add-to-cart" | "remove",
-    name: string
-  ): Locator {
-    const sanitizedName = this.sanitizeItemName(name);
-    return this.page.locator(`[data-test="${action}-${sanitizedName}"]`);
-  }
-
   // Add item to cart by index
   async addItemToCartByIndex(index: number) {
     await this.itemAddToCartButtons.nth(index).click();
@@ -60,6 +46,20 @@ export class Inventory extends BasePage {
   // Remove item from cart by name
   async removeItemFromCartByName(name: string) {
     await this.getButtonLocatorByName("remove", name).click();
+  }
+
+  // Helper method to sanitize item name
+  private sanitizeItemName(name: string): string {
+    return name.replace(/\s+/g, "-").toLowerCase();
+  }
+
+  // Dynamic locator for buttons based on item name
+  private getButtonLocatorByName(
+    action: "add-to-cart" | "remove",
+    name: string
+  ): Locator {
+    const sanitizedName = this.sanitizeItemName(name);
+    return this.page.locator(`[data-test="${action}-${sanitizedName}"]`);
   }
 
   // Additional dynamic locators for various elements
