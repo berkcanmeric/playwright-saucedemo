@@ -1,18 +1,21 @@
-import { test, expect, Locator } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import { Inventory } from "./pageobjects/Inventory";
 import { Cart } from "./pageobjects/Cart";
+import { CheckoutStepOne } from "./pageobjects/CheckoutStepOne";
 
 let inventory: Inventory;
 let cart: Cart;
+let checkoutStepOne: CheckoutStepOne;
 
 test.beforeEach(async ({ page }) => {
   inventory = new Inventory(page);
   cart = new Cart(page);
+  checkoutStepOne = new CheckoutStepOne(page);
   await inventory.goto();
   expect(page.url()).toBe(inventory.url);
 });
 
-test.describe("Inventory Page Tests", () => {
+test.describe("Cart Page Tests", () => {
   test.describe("Functionality Tests", () => {
     test("should verify cart contents after adding and removing items", async ({}) => {
       // Add items to cart
@@ -48,7 +51,7 @@ test.describe("Inventory Page Tests", () => {
       await inventory.addItemToCartByName("Sauce Labs Bike Light");
       await cart.goToCart();
       await cart.goToCheckout();
-      expect(page.url()).toContain("/checkout-step-one.html");
+      expect(page.url()).toContain(checkoutStepOne.url);
     });
   });
 });

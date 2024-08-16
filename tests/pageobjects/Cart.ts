@@ -2,14 +2,14 @@ import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
 
 export class Cart extends BasePage {
-  readonly url: string = "https://www.saucedemo.com/cart.html/";
+  readonly url: string = "https://www.saucedemo.com/cart.html";
   readonly itemNames: Locator;
   readonly itemDescriptions: Locator;
   readonly itemPrices: Locator;
   readonly itemRemoveFromCartButtons: Locator;
   readonly continueShoppingButton: Locator;
   readonly checkoutButton: Locator;
-  
+
   constructor(page: Page) {
     super(page);
     this.itemNames = page.locator(".inventory_item_name");
