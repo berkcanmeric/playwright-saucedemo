@@ -39,9 +39,7 @@ test.describe("CheckoutStepOne Page Tests", () => {
       await expect(checkoutStepOne.errorMessage).toHaveText(expectedMessage);
     }
 
-    test("should show error messages for missing form fields", async ({
-      page,
-    }) => {
+    test("should show error messages for missing form fields", async ({}) => {
       await checkoutStepOne.clickContinue();
       await checkErrorMessage(checkoutStepOne, errorMessages.firstName);
 
